@@ -123,7 +123,7 @@ class ProductProductAttribute(ModelSQL, ModelView):
 
     attribute_set = fields.Function(
         fields.Many2One("product.attribute.set", "Attribute Set"),
-        'get_attribute_set'
+        'on_change_with_attribute_set'
     )
 
     value = fields.Function(
@@ -210,7 +210,8 @@ class ProductProductAttribute(ModelSQL, ModelView):
         else:
             return unicode(getattr(self, 'value_' + self.attribute_type))
 
-    def get_attribute_set(self, name=None):
+    @fields.depends('product')
+    def on_change_with_attribute_set(self, name=None):
         """
         Returns attribute set for corresponding product's template
         """
